@@ -13,33 +13,30 @@ export default class List extends React.Component {
 
     return (
       <div {...props}>
-        <div onClick={() => props.listActions.updateList({id: listId, isEditing: true})}>
+        <div
+          onClick={() => props.listActions.updateList({id: listId, isEditing: true})}
+        >
           <div>
-            <button onClick={this.addItem.bind(this, listId)}>AddItem</button>
+            <button onClick={this.addItem.bind(this, listId)}>+</button>
           </div>
-          <Editor isEditing={list.isEditing}
+          <Editor 
+            isEditing={list.isEditing}
             value={list.title}
             onEdit={title => props.listActions.updateList({id: listId, title, isEditing: false})} 
           />
           <div>
-            <button onClick={this.deleteList.bind(this, listId)}>DeleteList</button>
+            <button onClick={this.deleteList.bind(this, listId)}>x</button>
           </div>
         </div>
         <Items
-          {/*}items={this.listItems} NOT WORKING */}
+          items={props.listItems}
           onValueClick={id => props.itemActions.updateItem({id, isEditing: true})}
           onEdit={(id, text) => props.itemActions.updateItem({id, text, isEditing: false})}
-          onDelete={itemId => this.deleteItem(listId, itemId)}
+          onDelete={id => this.deleteItem(listId, id)}
         />
       </div>
     )
   }
-
-  // listItems() {
-    // props.list.items.map(id => state.items[
-      // state.items.findIndex(item => item.id === id)
-    // ]).filter(item => item)
-  // }
 
   deleteList(listId, e) {
     e.stopPropagation()
@@ -50,11 +47,10 @@ export default class List extends React.Component {
   addItem(listId, event) {
     event.stopPropagation()
 
-    const item = this.props.itemActions.createItem({
+    const items = this.props.itemActions.createItem({
       text: 'New Shopping Item'
     })
-
-    this.props.listActions.connectToList(listId, item.id)
+    this.props.listActions.connectToList(listId, items.item.id)
   }
 
   deleteItem(listId, itemId) {
@@ -63,10 +59,13 @@ export default class List extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, props) {
   return {
     lists: state.lists,
-    items: state.items
+    items: state.items,
+    listItems: props.list.items.map(id => state.items[
+        state.items.findIndex(item => item.id === id)
+      ]).filter(item => item)
   }
 }
 

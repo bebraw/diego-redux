@@ -5,14 +5,15 @@ const initialState = []
 export default function lists(state = initialState, action) {
   switch (action.type) {
     case types.CREATE_LIST:
-      return [
-        ...state,
-        {
-          id: action.id,
-          title: action.title,
-          items: action.items || []
-        }
-      ]
+      return [...state, action.list]
+      // return [
+        // ...state,
+        // {
+          // id: action.id,
+          // title: action.title,
+          // items: action.items || []
+        // }
+      // ]
 
     case types.UPDATE_LIST:
       return state.map((list) => {
