@@ -2,7 +2,7 @@ import React from 'react'
 
 export default class Editor extends React.Component {
   render() {
-    const {value, onEdit, onValueClick, isEditing, ...props} = this.props
+    const { value, onEdit, onValueClick, isEditing, onCheck, ...props} = this.props
 
     return (
       <div {...props} >
@@ -13,12 +13,13 @@ export default class Editor extends React.Component {
 
   renderEdit = () => {
     return (
-      <input type="text"
+      <input
+        type="text"
         ref={(event) => event ? event.selectionStart = this.props.value.length : null}
         autoFocus={true}
         defaultValue={this.props.value}
         onBlur={this.finishEdit}
-        onKeyPress={this.checkEnter} 
+        onKeyPress={this.checkEnter}
       />
     )
   }
@@ -27,15 +28,17 @@ export default class Editor extends React.Component {
     const onDelete = this.props.onDelete
 
     return (
-      <div onClick={this.props.onValueClick}>
-        <span>{this.props.value}</span>
-        {onDelete ? this.renderDelete() : null }
+      <div>
+        <div onClick={this.props.onValueClick}>
+          <span className='value'>{this.props.value}</span>
+          {onDelete && this.renderDelete()}
+        </div>
       </div>
     )
   }
 
   renderDelete = () => {
-    return <button onClick={this.props.onDelete}>x</button>
+    return <button className='delete' onClick={this.props.onDelete}>x</button>
   }
 
   checkEnter = (event) => {
@@ -51,4 +54,12 @@ export default class Editor extends React.Component {
       this.props.onEdit(value)
     }
   }
+}
+
+const { func, string, bool } = React.PropTypes
+
+Editor.propTypes = {
+  value: string.isRequired,
+  onEdit: func.isRequired,
+  isEditing: bool
 }
