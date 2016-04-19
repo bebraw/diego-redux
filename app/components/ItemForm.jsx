@@ -1,81 +1,45 @@
-import React from 'react'
-import uuid from 'node-uuid'
-
-// Refactor this whole thing?
+import React from 'react';
+import {reduxForm} from 'redux-form';
 
 class ItemForm extends React.Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      isEditing: false
-    }
-  }
-
-  handleItemSku = (e) => { this.setState({sku: e.target.value}) }
-  handleItemText = (e) => { this.setState({text: e.target.value}) }
-  handleItemPrice = (e) => { this.setState({price: e.target.value}) }
-
-  handleSubmit = (event) => {
-    event.preventDefault()
-
-    let sku = this.refs.sku.value.trim()
-    let text = this.refs.text.value.trim()
-    let price = this.refs.price.value.trim()
-
-    const item = { id: uuid.v4(), sku, text, price }
-
-    // don't do anything if any field is left blank
-    if (!item.sku || !item.text || !item.price) { return }
-
-    this.props.itemActions.createItem(item)
-    this.props.listActions.connectToList(this.props.listId, item.id)
-    // reset the form after submission
-    this.refs.itemForm.reset()
-  }
-
   render() {
-    const { ...props } = this.props
+    const {fields: {sku, item, price}, handleSubmit} = this.props;
 
     return (
-      <form ref="itemForm" onSubmit={this.handleSubmit}>
+      <form onSubmit={handleSubmit}>
           <label>SKU</label>
-          <input 
-            type="text" 
-            placeholder="SKU" 
+          <input
+            type="text"
+            placeholder="SKU"
             autoFocus={true}
-            ref="sku" 
-            value={this.props.sku}
-            defaultValue={this.props.sku}
-            onChange={this.handleItemSku}
+            {...sku}
           />
 
           <label>Item</label>
-          <input 
+          <input
             type="text"
-            placeholder="Item" 
+            placeholder="Item"
             autoFocus={true}
-            ref="text" 
-            value={this.props.text}
-            defaultValue={this.props.text}
-            onChange={this.handleItemText}
+            {...item}
           />
 
           <label>Price</label>
-          <input 
+          <input
             type="text"
             placeholder="Price"
             autoFocus={true}
-            ref="price" 
-            value={this.props.price}
-            defaultValue={this.props.price}
-            onChange={this.handleItemPrice}
+            {...price}
           />
 
-        <button type="submit">{ this.state.isEditing ? 'Edit Item' : 'Add Item' }</button>
+        <button type="submit">Edit item</button>
       </form>
     )
   }
 }
 
-export default ItemForm
+export default reduxForm({
+  form: 'item',
+  fields: ['sku', 'item', 'price']
+}, () => {}, {
+  onSubmit: e => console.log(e)
+})(ItemForm);

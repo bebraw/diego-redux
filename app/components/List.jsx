@@ -63,11 +63,7 @@ export class List extends React.Component {
         <Modal 
           className='list-add-item'
           openModal={this.state.isModalOpen}>
-          <ItemForm 
-            itemActions={this.props.itemActions} 
-            listActions={this.props.listActions} 
-            listId={listId}>
-          </ItemForm>
+          <ItemForm />
         </Modal>
       </div>
     )
