@@ -35,7 +35,11 @@ export class App extends React.Component {
             mode={mode}
             onSubmit={form => {
               if(mode === 'Add') {
-                connectToList(editedList, createItem(form).id)
+                const {item} = createItem(form);
+
+                console.log('item', item);
+
+                connectToList(editedList, item.id)
               }
               else {
                 updateItem(form);
