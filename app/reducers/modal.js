@@ -10,7 +10,8 @@ export default function modal (state = initialState, action) {
     case types.OPEN_MODAL:
       return {
         isOpen: true,
-        mode: action.mode
+        mode: action.mode,
+        editedList: action.editedList
       }
 
     case types.CLOSE_MODAL:

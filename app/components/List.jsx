@@ -22,7 +22,7 @@ export class List extends React.Component {
       <div {...props}>
         <div className='list-add-item'>
         {/* activate add new modal here */}
-          <button onClick={() => props.modalActions.openModal('Add')}>+</button>
+          <button onClick={() => props.modalActions.openModal('Add', listId)}>+</button>
         </div>
 
         <div className='list-header'
@@ -45,7 +45,7 @@ export class List extends React.Component {
           onValueClick={(id) => props.itemActions.updateItem({id, isEditing: true})}
           onEdit={(id, text) => props.itemActions.updateItem({id, text, isEditing: false})}
           onDelete={(id) => this.deleteItem(listId, id)}
-          openModal={() => props.modalActions.openModal('Edit')}>
+          openModal={() => props.modalActions.openModal('Edit', listId)}>
         </Items>
       </div>
     )

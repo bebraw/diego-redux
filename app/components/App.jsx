@@ -15,9 +15,9 @@ export class App extends React.Component {
 
   render() {
     const {
-      lists, mode,
+      lists, mode, editedList,
       modalIsOpen, openModal, closeModal,
-      createItem, updateItem
+      createItem, updateItem, connectToList
     } = this.props
 
     return (
@@ -34,10 +34,12 @@ export class App extends React.Component {
           <ItemForm
             mode={mode}
             onSubmit={form => {
-              // Resolve mode and commit
-              const fn = mode === 'Add' ? createItem : updateItem
-
-              fn(form)
+              if(mode === 'Add') {
+                connectToList(editedList, createItem(form).id)
+              }
+              else {
+                updateItem(form);
+              }
 
               closeModal()
             }} />
@@ -49,6 +51,7 @@ export class App extends React.Component {
 
 export default connect(state => ({
   lists: state.lists,
+  editedList: state.modal.editedList, // figure out a good place for this state
   modalIsOpen: state.modal.isOpen,
   mode: state.modal.mode
 }), {

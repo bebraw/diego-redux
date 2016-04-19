@@ -1,8 +1,9 @@
 export const OPEN_MODAL = 'OPEN_MODAL'
-export function openModal (mode) {
+export function openModal (mode, editedList) {
   return {
     type: OPEN_MODAL,
-    mode: mode
+    mode: mode,
+    editedList: editedList // id
   }
 }
 
