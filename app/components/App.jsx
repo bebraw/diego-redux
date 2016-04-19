@@ -37,8 +37,6 @@ export class App extends React.Component {
               if(mode === 'Add') {
                 const {item} = createItem(form);
 
-                console.log('item', item);
-
                 connectToList(editedList, item.id)
               }
               else {
