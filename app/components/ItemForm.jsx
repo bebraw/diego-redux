@@ -3,7 +3,7 @@ import {reduxForm} from 'redux-form';
 
 class ItemForm extends React.Component {
   render() {
-    const {fields: {sku, item, price}, handleSubmit} = this.props;
+    const {fields: {sku, item, price}, mode, handleSubmit} = this.props;
 
     return (
       <form onSubmit={handleSubmit}>
@@ -31,7 +31,7 @@ class ItemForm extends React.Component {
             {...price}
           />
 
-        <button type="submit">Edit item</button>
+        <button type="submit">{mode} item</button>
       </form>
     )
   }
@@ -40,6 +40,4 @@ class ItemForm extends React.Component {
 export default reduxForm({
   form: 'item',
   fields: ['sku', 'item', 'price']
-}, () => {}, {
-  onSubmit: e => console.log(e)
 })(ItemForm);

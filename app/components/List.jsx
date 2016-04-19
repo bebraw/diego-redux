@@ -5,22 +5,9 @@ import Items from './Items'
 import Editor from './Editor'
 import * as listActionCreators from '../actions/lists'
 import * as itemActionCreators from '../actions/items'
-import Modal from './Modal'
-import ItemForm from './ItemForm'
+import * as modalActionCreators from '../actions/modal'
 
 export class List extends React.Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      isModalOpen: false
-    }
-  }
-
-  toggleModal () {
-    this.setState({ isModalOpen: !this.state.isModalOpen })
-  }
-  
   deleteList (listId, e) {
     e.stopPropagation()
 
@@ -34,7 +21,8 @@ export class List extends React.Component {
     return (
       <div {...props}>
         <div className='list-add-item'>
-          <button onClick={this.toggleModal.bind(this, listId)}>+</button>
+        {/* activate add new modal here */}
+          <button onClick={() => props.modalActions.openModal('Add')}>+</button>
         </div>
 
         <div className='list-header'
@@ -52,19 +40,13 @@ export class List extends React.Component {
           </div>
         </div>
 
-        <Items 
+        <Items
           items={props.listItems}
           onValueClick={(id) => props.itemActions.updateItem({id, isEditing: true})}
           onEdit={(id, text) => props.itemActions.updateItem({id, text, isEditing: false})}
           onDelete={(id) => this.deleteItem(listId, id)}
-          openModal={this.toggleModal.bind(this)}>
+          openModal={() => props.modalActions.openModal('Edit')}>
         </Items>
-
-        <Modal 
-          className='list-add-item'
-          openModal={this.state.isModalOpen}>
-          <ItemForm />
-        </Modal>
       </div>
     )
   }
@@ -82,7 +64,8 @@ function mapStateToProps (state, props) {
 function mapDispatchToProps (dispatch) {
   return {
     listActions: bindActionCreators(listActionCreators, dispatch),
-    itemActions: bindActionCreators(itemActionCreators, dispatch)
+    itemActions: bindActionCreators(itemActionCreators, dispatch),
+    modalActions: bindActionCreators(modalActionCreators, dispatch)
   }
 }
 

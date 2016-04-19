@@ -1,5 +1,5 @@
 import React from 'react'
-// todo: extract the styles to stylesheet maybe. 
+// todo: extract the styles to stylesheet maybe.
 
 export default class Modal extends React.Component {
   render() {
@@ -22,7 +22,7 @@ export default class Modal extends React.Component {
         transition: 'all 1s ease'
       }
     }
-    
+
     let modalStyles = this.props.openModal ? styles.modalIsOpen : styles.modalIsClosed;
 
     return <div style={modalStyles}>{this.props.children}</div>
